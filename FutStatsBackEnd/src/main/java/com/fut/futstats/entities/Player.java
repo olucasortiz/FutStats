@@ -1,29 +1,34 @@
 package com.fut.futstats.entities;
 
-import com.fut.futstats.entities.Match;
 import com.fut.futstats.entities.Team;
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
+@Table(name = "player")
 public class Player {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(nullable = false)
+    private String firstName;
+
+    @Column(nullable = false)
+    private String lastName;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    private String nationality;
     private String position;
-    private int number;
 
     @ManyToOne
-    @JoinColumn(name = "team_id")
+    @JoinColumn(name = "team_id", foreignKey = @ForeignKey(name = "fk_player_team"))
     private Team team;
 
-    @ManyToMany(mappedBy = "players")
-    private Set<Match> matches;
 
-    // Getters e Setters
     public Long getId() {
         return id;
     }
@@ -32,12 +37,36 @@ public class Player {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public String getPosition() {
@@ -48,27 +77,11 @@ public class Player {
         this.position = position;
     }
 
-    public int getNumber() {
-        return number;
-    }
-
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
     public Team getTeam() {
         return team;
     }
 
     public void setTeam(Team team) {
         this.team = team;
-    }
-
-    public Set<Match> getMatches() {
-        return matches;
-    }
-
-    public void setMatches(Set<Match> matches) {
-        this.matches = matches;
     }
 }

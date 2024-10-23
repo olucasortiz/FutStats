@@ -1,45 +1,30 @@
 package com.fut.futstats.entities;
 
 import jakarta.persistence.*;
-import java.util.Set;
+import java.util.Date;
 
 @Entity
+@Table(name = "match")
 public class Match {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String location;
-    private String date;
-
     @ManyToOne
-    @JoinColumn(name = "home_team_id")
+    @JoinColumn(name = "home_team_id", nullable = false, foreignKey = @ForeignKey(name = "fk_match_home_team"))
     private Team homeTeam;
 
     @ManyToOne
-    @JoinColumn(name = "away_team_id")
+    @JoinColumn(name = "away_team_id", nullable = false, foreignKey = @ForeignKey(name = "fk_match_away_team"))
     private Team awayTeam;
 
-    @ManyToMany
-    @JoinTable(
-            name = "match_player",
-            joinColumns = @JoinColumn(name = "match_id"),
-            inverseJoinColumns = @JoinColumn(name = "player_id")
-    )
-    private Set<Player> players;
+    @Column(name = "match_date", nullable = false)
+    private Date matchDate;
 
-    public Match() {
-    }
-
-    public Match(Set<Player> players, Team awayTeam, String date, Team homeTeam, String location, Long id) {
-        this.players = players;
-        this.awayTeam = awayTeam;
-        this.date = date;
-        this.homeTeam = homeTeam;
-        this.location = location;
-        this.id = id;
-    }
+    private String location;
+    private Integer homeTeamScore;
+    private Integer awayTeamScore;
 
     public Long getId() {
         return id;
@@ -47,22 +32,6 @@ public class Match {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Set<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(Set<Player> players) {
-        this.players = players;
-    }
-
-    public Team getAwayTeam() {
-        return awayTeam;
-    }
-
-    public void setAwayTeam(Team awayTeam) {
-        this.awayTeam = awayTeam;
     }
 
     public Team getHomeTeam() {
@@ -73,12 +42,20 @@ public class Match {
         this.homeTeam = homeTeam;
     }
 
-    public String getDate() {
-        return date;
+    public Team getAwayTeam() {
+        return awayTeam;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setAwayTeam(Team awayTeam) {
+        this.awayTeam = awayTeam;
+    }
+
+    public Date getMatchDate() {
+        return matchDate;
+    }
+
+    public void setMatchDate(Date matchDate) {
+        this.matchDate = matchDate;
     }
 
     public String getLocation() {
@@ -87,5 +64,21 @@ public class Match {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Integer getHomeTeamScore() {
+        return homeTeamScore;
+    }
+
+    public void setHomeTeamScore(Integer homeTeamScore) {
+        this.homeTeamScore = homeTeamScore;
+    }
+
+    public Integer getAwayTeamScore() {
+        return awayTeamScore;
+    }
+
+    public void setAwayTeamScore(Integer awayTeamScore) {
+        this.awayTeamScore = awayTeamScore;
     }
 }
